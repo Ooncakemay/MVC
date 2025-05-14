@@ -41,10 +41,12 @@ public class CardMatchingGame : MonoBehaviour
     private void Initialization()
     {
         InitCards();
-        AssignRandomBackground();
+        
         AssignCards();
-
+ 
         hasPickedPreviousCard = false;
+        
+        AssignRandomBackground();
         systemMsg.color = transparent;
         mask.SetActive(false);
     }
