@@ -24,7 +24,7 @@ namespace Work3
             button.onClick.AddListener(() => cardGameController.ClickCard(_id) );
             ShowCardBack();
         }
-        public void ShowCardBack()
+        private void ShowCardBack()
         {
             image.sprite = _back;
         }

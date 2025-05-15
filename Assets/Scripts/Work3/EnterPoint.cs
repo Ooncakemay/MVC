@@ -42,7 +42,7 @@ namespace Work3
                 }
                 else
                 {
-                    ConstructNormalCard(cardData, cardView);
+                    ConstructNormalCard(cardView, cardData);
                 }
                 
             }
@@ -58,7 +58,7 @@ namespace Work3
                 _cardGameController);
         }
 
-        private void ConstructNormalCard(CardData cardData, CardView cardView)
+        private void ConstructNormalCard(CardView cardView,CardData cardData)
         {
             var spriteIndex = Convert.ToInt32(cardData.SpriteIndex);
             cardView.Construct(cardData.Id,
