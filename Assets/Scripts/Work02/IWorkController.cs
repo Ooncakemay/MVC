@@ -4,7 +4,7 @@
     {
         void OnOkClick();
         void OnNextOneClick();
-        void RegisterNoteGroup(INoteGroup noteGroup);
+        void RegisterNoteGroup(IFortuneTellingGroup fortuneTellingGroup);
         void RegisterInputGroup(IInputGroup inputGroup);
     }
 }

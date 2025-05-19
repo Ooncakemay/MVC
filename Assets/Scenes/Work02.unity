@@ -401,7 +401,7 @@ GameObject:
   - component: {fileID: 437219233}
   - component: {fileID: 437219234}
   m_Layer: 5
-  m_Name: NoteGroup
+  m_Name: FortuneTelling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1196,8 +1196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e07e7b6433c4b61a67540e7129e5e67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputGroup: {fileID: 1616810989}
-  NoteGroup: {fileID: 437219234}
+  inputGroup: {fileID: 1616810989}
+  fortuneTellingGroup: {fileID: 437219234}
 --- !u!1 &1100529083
 GameObject:
   m_ObjectHideFlags: 0

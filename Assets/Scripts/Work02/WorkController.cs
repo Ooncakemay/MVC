@@ -20,7 +20,7 @@ namespace Work02
         
         private  IInputGroup _inputGroup;
         
-        private INoteGroup _noteGroup;
+        private IFortuneTellingGroup fortuneTellingGroup;
 
 
 
@@ -35,18 +35,18 @@ namespace Work02
         public void OnOkClick()
         {
             _inputGroup.Hide();
-            _noteGroup.Show(GetData());
+            fortuneTellingGroup.Show(GetData());
         }
 
         public void OnNextOneClick()
         {
-            _noteGroup.ShowNextMessage(GetData());
+            fortuneTellingGroup.ShowNextMessage(GetData());
  
         }
 
-        public void RegisterNoteGroup(INoteGroup noteGroup)
+        public void RegisterNoteGroup(IFortuneTellingGroup fortuneTellingGroup)
         {
-            _noteGroup = noteGroup;
+            this.fortuneTellingGroup = fortuneTellingGroup;
         }
 
         public void RegisterInputGroup(IInputGroup inputGroup)

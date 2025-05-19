@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Work02
 {
-    public class NoteGroup:MonoBehaviour,INoteGroup
+    public class FortuneTellingGroup:MonoBehaviour,IFortuneTellingGroup
     {
         
         [SerializeField] Button button;
