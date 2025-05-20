@@ -51,7 +51,7 @@ namespace Work3
         {
             mask.SetActive(true);
             systemMsg.text = "Congratulations!";
-            float alpha = 0.05f;
+            var alpha = 0.05f;
             while(alpha < 1)
             {
                 alpha += 0.05f;
@@ -59,7 +59,6 @@ namespace Work3
                 yield return new WaitForSeconds(0.2f);
             }
             yield return new WaitForSeconds(3f);
-            Debug.Log("遊戲結束");
         }
 
     }

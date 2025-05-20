@@ -11,25 +11,22 @@ namespace Work3
         [SerializeField] private List<Sprite> cardSprites;
         [SerializeField] private List<CardView> cardViews;
         [SerializeField] private PanelView panelView;
-
-        // 資料
-        private ICardRepository _cardRepository;
-        // 控制器
-        private ICardGameController _cardGameController;
+        
+        private ICardModel cardModel;
+        private ICardGameController cardGameController;
 
         public void Start()
         {
-            _cardRepository = new CardRepository();
-            _cardGameController = new CardGameController(_cardRepository);
+            cardModel = new CardModel();
+            cardGameController = new CardGameController(cardModel);
             ConstructCardView();
-            panelView.Construct(_cardGameController);
+            panelView.Construct(cardGameController);
             
         }
-
-        // 在這裡設定CardView顯示
+        
         private void ConstructCardView()
         {
-            var cards = _cardRepository.GetAllCards();
+            var cards = cardModel.GetAllCards();
 
             for (var index = 0; index < cards.Count; index++)
             {
@@ -55,7 +52,7 @@ namespace Work3
             cardView.Construct(cardData.Id,
                 cardJoker,
                 cardBack,
-                _cardGameController);
+                cardGameController);
         }
 
         private void ConstructNormalCard(CardView cardView,CardData cardData)
@@ -64,7 +61,7 @@ namespace Work3
             cardView.Construct(cardData.Id,
                 cardSprites[spriteIndex],
                 cardBack,
-                _cardGameController);
+                cardGameController);
         }
     }
 }

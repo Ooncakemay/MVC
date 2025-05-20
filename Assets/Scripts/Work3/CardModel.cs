@@ -4,15 +4,15 @@ using System.Linq;
 
 namespace Work3
 {
-    public class CardRepository:ICardRepository
+    public class CardModel:ICardModel
     {
         
-        private Dictionary<string, CardData> _cards = new();
+        private Dictionary<string, CardData> cards = new();
         /// 鬼牌是 100
-        private readonly int _joker = 100;
+        private const int Joker = 100;
         
  
-        public CardRepository()
+        public CardModel()
         {
             AssignCards();
      
@@ -79,13 +79,13 @@ namespace Work3
             for (var  index = 0; index < contents.Length ; index++)
             {
                 var id = index.ToString();
-                _cards.Add(id, new CardData(id ,id ,false));
+                cards.Add(id, new CardData(id ,id ,false));
             }
 
             for (var index = 0; index < contents.Length; index++)
             {
-                var tempCard = _cards[unorderedNums[index].ToString()];
-                tempCard.SpriteIndex =  contents[index] == _joker ? "joker" : contents[index].ToString();
+                var tempCard = cards[unorderedNums[index].ToString()];
+                tempCard.SpriteIndex =  contents[index] == Joker ? "joker" : contents[index].ToString();
                 tempCard.IsJoker = (index == 0);
             }
         }
@@ -96,7 +96,7 @@ namespace Work3
             
             var contents = new int[9];
             
-            contents[0] = _joker;
+            contents[0] = Joker;
             contents[1] = randomPickedContents[0];
             contents[2] = randomPickedContents[0];
             contents[3] = randomPickedContents[1];
@@ -112,7 +112,7 @@ namespace Work3
 
         public IReadOnlyList<CardData> GetAllCards()
         {
-            return _cards.Values.ToList();
+            return cards.Values.ToList();
         }
         
         public bool CanFlip(string id)
@@ -145,7 +145,7 @@ namespace Work3
 
         public bool IsAllMatched()
         {
-            return _cards.Values.Where(c=> c.IsJoker == false).All(card => card.State == State.Match);
+            return cards.Values.Where(c=> c.IsJoker == false).All(card => card.State == State.Match);
         }
 
         public bool IsJoker(string id)
@@ -155,14 +155,14 @@ namespace Work3
 
         public IReadOnlyList<string> GetAllFrontCardsId()
         {
-           return _cards.Values.Where(c=> c.State is State.Front or State.Match).Select(c => c.Id).ToList();
+           return cards.Values.Where(c=> c.State is State.Front or State.Match).Select(c => c.Id).ToList();
         }
 
         private CardData GetCard(string id)
         {
-            if (_cards.ContainsKey(id))
+            if (cards.ContainsKey(id))
             {
-                return _cards[id];
+                return cards[id];
             }
 
             throw new Exception("卡片不存在");

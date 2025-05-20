@@ -7,30 +7,29 @@ namespace Work3
  
     public class CardGameController:ICardGameController
     { 
-        private readonly ICardRepository _cardRepository;
-        private Dictionary<string,ICardView> _cardViews = new();
-        private IPanelView _panelView;
+        private readonly ICardModel cardModel;
+        private Dictionary<string,ICardView> cardViews = new();
+        private IPanelView panelView;
         
-        private string _lastClickedCardId = string.Empty;
-        private int _cardCount;
+        private string lastClickedCardId = string.Empty;
+        private int cardCount;
         private const int MaxCardCount = 2;
-        private bool _canClick = true;
+        private bool canClick = true;
         
-        public CardGameController(ICardRepository cardRepository)
+     
+        public CardGameController(ICardModel cardModel)
         {
-            _cardRepository = cardRepository;
+            this.cardModel = cardModel;
         }
-
-        private bool CanFlip()
+        public void RegisterPanelView(IPanelView panelView)
         {
-            return _canClick;
+            this.panelView = panelView;
         }
         
         public void RegisterCardView(string id, ICardView cardView)
         {
-            _cardViews.Add(id, cardView);
+            cardViews.Add(id, cardView);
         }
-
         public void ClickCard(string id)
         {
             if(!CanFlip()) 
@@ -40,14 +39,14 @@ namespace Work3
                 return;
 
             if (IsEmptyLastCard())
-                _lastClickedCardId = id;
+                lastClickedCardId = id;
 
             FlipCardToFront(id);
             
-            if(_cardRepository.IsJoker(id))
+            if(cardModel.IsJoker(id))
             {
-                _canClick = false;
-                var ids =  _cardRepository.GetAllFrontCardsId();
+                canClick = false;
+                var ids =  cardModel.GetAllFrontCardsId();
                 foreach (var cardId in ids)
                 {
                     FlipCardToBack(cardId);
@@ -55,20 +54,20 @@ namespace Work3
                 return;
             }
             
-            if (_cardCount == MaxCardCount)
+            if (cardCount == MaxCardCount)
             {
-                _canClick = false;
+                canClick = false;
                 
                 var currentCardView = GetCardView(id);
-                var lastCardView = GetCardView(_lastClickedCardId);
+                var lastCardView = GetCardView(lastClickedCardId);
                 
-                var match = _cardRepository.CheckMatch(_lastClickedCardId, id);
+                var match = cardModel.CheckMatch(lastClickedCardId, id);
                 if (match)
                 {
-                    _cardRepository.SetCardMatch(_lastClickedCardId);
-                    _cardRepository.SetCardMatch(id);
+                    cardModel.SetCardMatch(lastClickedCardId);
+                    cardModel.SetCardMatch(id);
                     ResetCardClickFlag();
-                    if (_cardRepository.IsAllMatched())
+                    if (cardModel.IsAllMatched())
                     {
                         Congratulation();
                     }
@@ -76,8 +75,8 @@ namespace Work3
                 }
                 else
                 {
-                    _cardRepository.FlipCard(_lastClickedCardId);
-                    _cardRepository.FlipCard(id);
+                    cardModel.FlipCard(lastClickedCardId);
+                    cardModel.FlipCard(id);
                     currentCardView.DelayShowCardBack();
                     lastCardView.DelayShowCardBack();
 
@@ -85,57 +84,68 @@ namespace Work3
             }
 
         }
+        
+        private bool CanFlip()
+        {
+            return canClick;
+        }
+        private bool IsSameCard(string id)
+        {
+            return lastClickedCardId == id && cardCount == 1;
+        }
+        
+        
+        private bool IsEmptyLastCard()
+        {
+            return string.IsNullOrEmpty(lastClickedCardId);
+        }
+        private void FlipCardToFront(string id)
+        {
+            cardCount++;
+            cardModel.FlipCard(id);
+            GetCardView(id).ShowCardFront();
+        }
 
         private void FlipCardToBack(string cardId)
         {
             GetCardView(cardId).DelayShowCardBack();
-            _cardRepository.FlipCard(cardId);
+            cardModel.FlipCard(cardId);
         }
-
-        private void FlipCardToFront(string id)
-        {
-            _cardCount++;
-            _cardRepository.FlipCard(id);
-            GetCardView(id).ShowCardFront();
-        }
-
-        private bool IsEmptyLastCard()
-        {
-            return string.IsNullOrEmpty(_lastClickedCardId);
-        }
-
-        private bool IsSameCard(string id)
-        {
-            return _lastClickedCardId == id && _cardCount == 1;
-        }
-
-        private void Congratulation()
-        {
-            _canClick = false;
-            Debug.Log("Congratulations! You've matched all the cards!");
-            _panelView.Completed();
-        }
-
-        public void ResetCardClickFlag()
-        {
-            _canClick = true;
-            _cardCount = 0;
-            _lastClickedCardId = "";
-        }
-
-        public void RegisterPanelView(IPanelView panelView)
-        {
-            _panelView = panelView;
-        }
-
+        
         private ICardView GetCardView(string id)
         {
-            if (_cardViews.ContainsKey(id))
+            if (cardViews.ContainsKey(id))
             {
-                return _cardViews[id];
+                return cardViews[id];
             }
 
             throw new Exception($"CardView with id {id} not found.");
         }
+        
+        public void ResetCardClickFlag()
+        {
+            canClick = true;
+            cardCount = 0;
+            lastClickedCardId = "";
+        }
+        
+
+        private void Congratulation()
+        {
+            canClick = false;
+            Debug.Log("Congratulations! You've matched all the cards!");
+            panelView.Completed();
+        }
+
+     
+
+
+     
+        
+       
+      
+        
+       
+
     }
 }

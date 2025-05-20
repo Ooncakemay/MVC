@@ -6,9 +6,9 @@ namespace Work3
 {
     public class CardView: MonoBehaviour,ICardView
     {
-        private string _id;
-        private Sprite _front;
-        private Sprite _back;
+        private string id;
+        private Sprite front;
+        private Sprite back;
 
         [SerializeField] private Image image;
         [SerializeField] private Button button;
@@ -16,17 +16,17 @@ namespace Work3
         private ICardGameController _cardGameController;
         public void Construct( string id ,Sprite front,Sprite back ,ICardGameController cardGameController)
         {
-            _id = id;
-            _front = front;
-            _back = back;
+            this.id = id;
+            this.front = front;
+            this.back = back;
             _cardGameController = cardGameController;
-            cardGameController.RegisterCardView(_id,this);
-            button.onClick.AddListener(() => cardGameController.ClickCard(_id) );
+            cardGameController.RegisterCardView(this.id,this);
+            button.onClick.AddListener(() => cardGameController.ClickCard(this.id) );
             ShowCardBack();
         }
         private void ShowCardBack()
         {
-            image.sprite = _back;
+            image.sprite = back;
         }
         
         public void DelayShowCardBack()
@@ -35,7 +35,7 @@ namespace Work3
         }
         public void ShowCardFront()
         {
-            image.sprite = _front;
+            image.sprite = front;
 
         }
         
@@ -43,7 +43,7 @@ namespace Work3
         private IEnumerator DelayThenResetBack()
         {
             yield return new WaitForSeconds(1); 
-            image.sprite = _back;
+            image.sprite = back;
             _cardGameController.ResetCardClickFlag();
         }
         

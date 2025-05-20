@@ -399,7 +399,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 437219233}
-  - component: {fileID: 437219234}
   m_Layer: 5
   m_Name: FortuneTelling
   m_TagString: Untagged
@@ -428,20 +427,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &437219234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 437219232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfcab4ab01b54ab58efff47adba669bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 443919758}
-  textMeshProUGUI: {fileID: 1397196755}
 --- !u!1 &443919756
 GameObject:
   m_ObjectHideFlags: 0
@@ -1734,7 +1719,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1616810988}
-  - component: {fileID: 1616810989}
   m_Layer: 5
   m_Name: InpitGroup
   m_TagString: Untagged
@@ -1763,20 +1747,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1616810989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616810987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e04f9aa9f831430a81cf83bd0614866c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 556394925}
-  textMeshProUGUI: {fileID: 727864518}
 --- !u!1 &1684627229
 GameObject:
   m_ObjectHideFlags: 0

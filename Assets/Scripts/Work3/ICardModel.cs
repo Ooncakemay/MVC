@@ -2,17 +2,14 @@
 
 namespace Work3
 {
-    public interface ICardRepository
+    public interface ICardModel
     {
         IReadOnlyList<CardData> GetAllCards();
-        
-        bool CanFlip(string id);
+        IReadOnlyList<string> GetAllFrontCardsId();
         void FlipCard(string id);
         bool CheckMatch(string lastClickedCardId, string id);
         void SetCardMatch(string id);
         bool IsAllMatched();
         bool IsJoker(string id);
-        
-        IReadOnlyList<string> GetAllFrontCardsId();
     }
 }
