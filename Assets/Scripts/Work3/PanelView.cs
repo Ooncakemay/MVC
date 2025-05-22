@@ -1,11 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Work3
 {
     public class PanelView: MonoBehaviour,IPanelView
     {
+        
+        //Card 
+        [SerializeField] private Sprite cardBack;
+        [SerializeField] private Sprite cardJoker;
+        [SerializeField] private List<Sprite> cardSprites;
+        [SerializeField] private List<Card> cards;
+        
+        private Dictionary<string,Card> cardDictionary = new();
+        
         // background
         [SerializeField] private Sprite[] backgroundPictures;
         private const int backgroundTypeCount = 2;
@@ -15,18 +27,17 @@ namespace Work3
         [SerializeField] private GameObject mask;
         [SerializeField] private Text systemMsg;
         
-        private Color transparent = new Color(1, 1, 1, 0);
+        private Color transparent = new(1, 1, 1, 0);
         
+        private ICardGameController  cardGameController;
         
-        public void Construct( ICardGameController cardGameController)
-        {
-            cardGameController.RegisterPanelView(this);
-        }
 
         void Start () 
         {
             Initialization();
+            cardGameController = new CardGameController(this);
         }
+        
         
         private void Initialization()
         {
@@ -35,6 +46,7 @@ namespace Work3
             systemMsg.color = transparent;
             mask.SetActive(false);
         }
+        
         
         private void AssignRandomBackground()
         {
@@ -46,7 +58,33 @@ namespace Work3
         {
             StartCoroutine(ShowGameCompleted());
         }
+
+     
+
+        public void DelayShowCardBack(string id)
+        {
+            if (cardDictionary.ContainsKey(id))
+            {
+                StartCoroutine(WaitForDelayShowCardBackThenReset(id));
+
+            }
+
+        }
         
+        private IEnumerator WaitForDelayShowCardBackThenReset(string id)
+        {
+            yield return StartCoroutine(cardDictionary[id].DelayThenResetBack());
+            cardGameController.ResetCardClickFlag();
+        }
+
+        public void ShowCardFront(string id)
+        {
+            if (cardDictionary.ContainsKey(id))
+            {
+                cardDictionary[id].ShowCardFront();
+            }
+        }
+
         private IEnumerator ShowGameCompleted()
         {
             mask.SetActive(true);
@@ -60,6 +98,35 @@ namespace Work3
             }
             yield return new WaitForSeconds(3f);
         }
+        
+        
+        public void InitCard(IEnumerable<CardData> cardDatas)
+        {
 
+            foreach (var data in cardDatas)
+            {
+                var index = Convert.ToInt32(data.Id);
+                var card = cards[index];
+                
+                if (data.SpriteIndex == "joker")
+                {
+                    card.Initialization(
+                        cardJoker,
+                        cardBack, () => cardGameController.ClickCard(data.Id));  
+                }
+                else
+                {
+                    var cardSpriteIndex = Convert.ToInt32(data.SpriteIndex);
+                    card.Initialization(cardSprites[cardSpriteIndex], 
+                        cardBack, () => cardGameController.ClickCard(data.Id));  
+                }
+                
+                cardDictionary.Add(data.Id,card);
+                
+            }
+
+           
+         
+        }
     }
 }

@@ -8,7 +8,6 @@ namespace Work3
     public class CardGameController:ICardGameController
     { 
         private readonly ICardModel cardModel;
-        private Dictionary<string,ICardView> cardViews = new();
         private IPanelView panelView;
         
         private string lastClickedCardId = string.Empty;
@@ -17,19 +16,14 @@ namespace Work3
         private bool canClick = true;
         
      
-        public CardGameController(ICardModel cardModel)
-        {
-            this.cardModel = cardModel;
-        }
-        public void RegisterPanelView(IPanelView panelView)
+        public CardGameController(IPanelView panelView)
         {
             this.panelView = panelView;
+            cardModel = new CardModel();
+            panelView.InitCard(cardModel.GetAllCards());
         }
         
-        public void RegisterCardView(string id, ICardView cardView)
-        {
-            cardViews.Add(id, cardView);
-        }
+
         public void ClickCard(string id)
         {
             if(!CanFlip()) 
@@ -58,9 +52,6 @@ namespace Work3
             {
                 canClick = false;
                 
-                var currentCardView = GetCardView(id);
-                var lastCardView = GetCardView(lastClickedCardId);
-                
                 var match = cardModel.CheckMatch(lastClickedCardId, id);
                 if (match)
                 {
@@ -77,8 +68,8 @@ namespace Work3
                 {
                     cardModel.FlipCard(lastClickedCardId);
                     cardModel.FlipCard(id);
-                    currentCardView.DelayShowCardBack();
-                    lastCardView.DelayShowCardBack();
+                    panelView.DelayShowCardBack(id);
+                    panelView.DelayShowCardBack(lastClickedCardId);
 
                 } 
             }
@@ -103,24 +94,16 @@ namespace Work3
         {
             cardCount++;
             cardModel.FlipCard(id);
-            GetCardView(id).ShowCardFront();
+            panelView.ShowCardFront(id);
         }
 
         private void FlipCardToBack(string cardId)
         {
-            GetCardView(cardId).DelayShowCardBack();
+            panelView.DelayShowCardBack(cardId);
             cardModel.FlipCard(cardId);
         }
         
-        private ICardView GetCardView(string id)
-        {
-            if (cardViews.ContainsKey(id))
-            {
-                return cardViews[id];
-            }
-
-            throw new Exception($"CardView with id {id} not found.");
-        }
+       
         
         public void ResetCardClickFlag()
         {
