@@ -1,71 +1,68 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace FixWork
 {
     public class View : MonoBehaviour, IView
     {
-    
+        
+
         [SerializeField] private Button inputButton;
-        [SerializeField] private TMP_InputField inputText;
-        [SerializeField] private Button noteButton;
-        [SerializeField] private TMP_InputField noteText;
-        [SerializeField] private GameObject inputPanel;
-        [SerializeField] private GameObject notePanel;
-        [SerializeField] private ControllerType  controllerType; 
-        
-        private IController controller;
-        
+        [SerializeField] private TMP_InputField input;
+        [SerializeField] private Button nextButton; 
+        [SerializeField] private TMP_InputField nextInput;
+        [FormerlySerializedAs("input")] [SerializeField] private GameObject inputGroup;
+        [FormerlySerializedAs("next")] [SerializeField] private GameObject nextGroup;
+        [SerializeField] private ControllerType  controllerType;
+        private IController _controller; 
+
         public void Start()
         {
-            if (controllerType == ControllerType.Note)
+            if (controllerType == ControllerType.Divination)
             {
-                controller = new Controller(this);
+                _controller = new DivinationController(this);
             }
             else
             {
-                controller = new DivinationController(this);
+                _controller = new Controller(this);
             }
-           
-            noteButton.onClick.AddListener(controller.OnNoteClick);
-            inputButton.onClick.AddListener(controller.OnOkClick);
+
+            inputButton.onClick.AddListener(() => _controller.OnOkClick());
+            nextButton.onClick.AddListener(() => _controller.OnNextClick());
+
+
         }
 
-        public string GetName()
+
+        
+        public void ShowNext(bool show)
         {
-            return inputText.text;
+            nextGroup.SetActive(show);
+        }
+
+        public string GetInput()
+        {
+            return input.text;
+        }
+
+        public string GetNextInput()
+        {
+            return nextInput.text;
+        }
+
+        public void ShowInput(bool show)
+        {
+            inputGroup.SetActive(show);
         }
 
         public void Display(string message)
         {
-            noteText.text = message;
-        }
-
-        public string GetText()
-        {
-            return noteText.text;
-        }
-
-        public void NoteShow()
-        {
-            notePanel.SetActive(true);
-        }
-
-        public void NoteHide()
-        {
+            nextInput.text = message;
             
-            notePanel.SetActive(false);
         }
 
-        public void InputHide()
-        {
-            inputPanel.SetActive(false);
-        }
-
-        public void InputShow()
-        {
-            inputPanel.SetActive(true);
-        }
+      
     }
 }

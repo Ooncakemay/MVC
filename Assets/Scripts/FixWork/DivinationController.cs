@@ -12,25 +12,25 @@
             this.view = view;
             model = new DivinationModel();
         }
-
-     
+        
 
         public void OnOkClick()
         {
-            var name = view.GetName();
-            var text = model.GetData(name);
-            view.InputHide();
-            view.NoteShow();
-            view.Display(text);
+            view.Display(model.GetData(""));
+            view.ShowInput(false);
+            view.ShowNext(true);
+            
+        }
 
-        }
-        
-        public void OnNoteClick()
+        public void OnNextClick()
         {
-            var text = model.GetData("");
-            view.Display(text);
-     
+            view.Display(model.GetData(""));
+            view.ShowInput(false);
+            view.ShowNext(true);
+            
         }
+
+      
         
      
     }

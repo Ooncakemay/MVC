@@ -2,13 +2,13 @@
 {
     public interface IView
     {
-        public  void NoteShow();
-        public void NoteHide();
-        public  void InputHide();
-        public void InputShow();
-        public string GetName();
+        public void ShowInput(bool show);
+        public void ShowNext(bool show);
+       
+        public string GetInput();
+        public string GetNextInput();
         public void Display(string message);
 
-        public string GetText();
+
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface IController
     {
-        public   void OnOkClick();
-        public void OnNoteClick();
+        public void OnOkClick();
+        public void OnNextClick();
     }
 }

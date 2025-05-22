@@ -4,7 +4,7 @@ namespace FixWork
 {
     public class Model:IModel
     {
-        private Dictionary<string,string> data = new Dictionary<string, string>();
+        private Dictionary<string,string> data = new();
 
 
         public string GetData(string name)
