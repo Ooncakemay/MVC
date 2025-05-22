@@ -15,8 +15,6 @@ namespace Work3
         public CardModel()
         {
             AssignCards();
-     
-            
         }
         
         private void AssignCards()
@@ -113,11 +111,6 @@ namespace Work3
         public IReadOnlyList<CardData> GetAllCards()
         {
             return cards.Values.ToList();
-        }
-        
-        public bool CanFlip(string id)
-        {
-            return GetCard(id).State == State.Back;
         }
 
         public void FlipCard(string id)

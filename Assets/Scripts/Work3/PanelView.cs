@@ -34,12 +34,12 @@ namespace Work3
 
         void Start () 
         {
-            Initialization();
+            Init();
             cardGameController = new CardGameController(this);
         }
         
         
-        private void Initialization()
+        private void Init()
         {
             
             AssignRandomBackground();
@@ -102,7 +102,6 @@ namespace Work3
         
         public void InitCard(IEnumerable<CardData> cardDatas)
         {
-
             foreach (var data in cardDatas)
             {
                 var index = Convert.ToInt32(data.Id);
@@ -110,23 +109,33 @@ namespace Work3
                 
                 if (data.SpriteIndex == "joker")
                 {
-                    card.Initialization(
-                        cardJoker,
-                        cardBack, () => cardGameController.ClickCard(data.Id));  
+                    InitJockerCard(card, data);
                 }
                 else
                 {
-                    var cardSpriteIndex = Convert.ToInt32(data.SpriteIndex);
-                    card.Initialization(cardSprites[cardSpriteIndex], 
-                        cardBack, () => cardGameController.ClickCard(data.Id));  
+                    InitNormalCard(data, card);
                 }
-                
                 cardDictionary.Add(data.Id,card);
                 
             }
-
-           
          
+        }
+
+        private void InitJockerCard(Card card, CardData data)
+        {
+            card.Init(
+                cardJoker,
+                cardBack,
+                () => cardGameController.ClickCard(data.Id));
+        }
+
+        private void InitNormalCard(CardData data, Card card)
+        {
+            var cardSpriteIndex = Convert.ToInt32(data.SpriteIndex);
+            card.Init(
+                cardSprites[cardSpriteIndex], 
+                cardBack,
+                () => cardGameController.ClickCard(data.Id));
         }
     }
 }

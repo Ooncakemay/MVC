@@ -1,6 +1,5 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace FixWork
@@ -13,8 +12,8 @@ namespace FixWork
         [SerializeField] private TMP_InputField input;
         [SerializeField] private Button nextButton; 
         [SerializeField] private TMP_InputField nextInput;
-        [FormerlySerializedAs("input")] [SerializeField] private GameObject inputGroup;
-        [FormerlySerializedAs("next")] [SerializeField] private GameObject nextGroup;
+        [SerializeField] private GameObject inputGroup;
+        [SerializeField] private GameObject nextGroup;
         [SerializeField] private ControllerType  controllerType;
         private IController _controller; 
 
@@ -29,32 +28,25 @@ namespace FixWork
                 _controller = new Controller(this);
             }
 
-            inputButton.onClick.AddListener(() => _controller.OnOkClick());
-            nextButton.onClick.AddListener(() => _controller.OnNextClick());
+            inputButton.onClick.AddListener(() => _controller.OnOkClick(input.text));
+            nextButton.onClick.AddListener(() => _controller.OnNextClick(input.text,nextInput.text));
 
-
-        }
-
-
-        
-        public void ShowNext(bool show)
-        {
-            nextGroup.SetActive(show);
-        }
-
-        public string GetInput()
-        {
-            return input.text;
-        }
-
-        public string GetNextInput()
-        {
-            return nextInput.text;
         }
 
         public void ShowInput(bool show)
         {
-            inputGroup.SetActive(show);
+            if (show)
+            {
+                inputGroup.SetActive(true);
+                nextGroup.SetActive(false);
+                
+            }
+            else
+            {
+                inputGroup.SetActive(false);
+                nextGroup.SetActive(true);
+            }
+           
         }
 
         public void Display(string message)

@@ -5,12 +5,9 @@ namespace Work3
     public interface IPanelView
     {
         public void Completed();
-        
-        public void DelayShowCardBack(string id);
-        public void ShowCardFront(string id);
-
+        public void DelayShowCardBack();
+        public void ShowCardFront();
         public void InitCard(IEnumerable<CardData> cardDatas);
-
-
+        
     }
 }

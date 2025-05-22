@@ -15,26 +15,18 @@ namespace FixWork
             this.view = view;
             model = new Model();
         }
-        public void Init()
-        {
-            view.ShowNext(false);
-        }
 
-        public void OnOkClick()
+
+        public void OnOkClick(string name)
         {
-            var name = view.GetInput();
             view.Display(model.GetData(name));
             view.ShowInput(false);
-            view.ShowNext(true);
         }
 
-        public void OnNextClick()
+        public void OnNextClick(string name,string note)
         {
-            var name = view.GetInput();
-            var note = view.GetNextInput();
             model.SaveData(name,note);
             view.ShowInput(true);
-            view.ShowNext(false);
           
         }
     }

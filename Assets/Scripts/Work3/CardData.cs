@@ -15,9 +15,6 @@
         public State State { get; set; }
         
         
-        
-        
-        
         public CardData(string id,string spriteIndex,bool isJoker)
         {
             Id = id;

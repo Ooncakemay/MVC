@@ -14,19 +14,15 @@
         }
         
 
-        public void OnOkClick()
+        public void OnOkClick(string name)
         {
             view.Display(model.GetData(""));
             view.ShowInput(false);
-            view.ShowNext(true);
-            
         }
-
-        public void OnNextClick()
+        
+        public void OnNextClick(string name,string text)
         {
             view.Display(model.GetData(""));
-            view.ShowInput(false);
-            view.ShowNext(true);
             
         }
 

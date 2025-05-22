@@ -14,18 +14,13 @@ namespace Work3
         [SerializeField] private Button button;
 
 
-        public void Initialization(Sprite front,Sprite back,Action flipCard )
+        public void Init(Sprite front,Sprite back,Action flipCard )
         {
             this.front = front;
             this.back = back;
-            button.onClick.AddListener(flipCard.Invoke);
-        
-            ShowCardBack();
-        }
-        
-        private void ShowCardBack()
-        {
             image.sprite = back;
+            button.onClick.AddListener(flipCard.Invoke);
+            
         }
         
         public void ShowCardFront()
@@ -33,7 +28,6 @@ namespace Work3
             image.sprite = front;
 
         }
-        
         
         public IEnumerator DelayThenResetBack()
         {
