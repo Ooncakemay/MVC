@@ -16,8 +16,7 @@ namespace FixWork
         };
 
         private Random random = new();
-
-       
+        
         public string GetData(string name)
         {
             var randomIndex = random.Next(0, data.Count);
@@ -27,9 +26,6 @@ namespace FixWork
 
         public void SaveData(string name, string text)
         {
-            
-            
-            
         }
     }
 }

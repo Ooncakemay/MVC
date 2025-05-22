@@ -4,6 +4,5 @@ namespace FixWork
     {
         Note,
         Divination
-        
     }
 }

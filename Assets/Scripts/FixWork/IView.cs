@@ -4,7 +4,6 @@
     {
         public void ShowInput(bool show);
         public void Display(string message);
-
-
+        
     }
 }

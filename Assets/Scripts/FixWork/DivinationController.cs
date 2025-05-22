@@ -4,16 +4,13 @@
     {
         
         private IView view;
-        
         private IModel model;
-        
         public DivinationController(IView view)
         {
             this.view = view;
             model = new DivinationModel();
         }
         
-
         public void OnOkClick(string name)
         {
             view.Display(model.GetData(""));
@@ -25,10 +22,7 @@
             view.Display(model.GetData(""));
             
         }
-
-      
         
-     
     }
 
 }
