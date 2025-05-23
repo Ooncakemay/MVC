@@ -5,11 +5,12 @@ namespace Work3
     public interface ICardModel
     {
         IReadOnlyList<CardData> GetAllCards();
-        IReadOnlyList<string> GetAllFrontCardsId();
-        void FlipCard(string id);
-        bool CheckMatch(string lastClickedCardId, string id);
-        void SetCardMatch(string id);
+        IEnumerable<int> GetAllFrontCardsId();
+        void FlipCard(int id);
+        bool CheckMatch(int lastClickedCardId, int id);
+        void SetCardMatch(int id);
         bool IsAllMatched();
-        bool IsJoker(string id);
+        bool IsJoker(int id);
+        bool IsFront(int id);
     }
 }

@@ -1,35 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Work3
+﻿namespace Work3
 {
- 
-    public class CardGameController:ICardGameController
-    { 
+    public class CardGameController : ICardGameController
+    {
         private readonly ICardModel cardModel;
-        private IPanelView panelView;
-        
-        private string lastClickedCardId = string.Empty;
+        private ICardView _cardView;
+
+        private int lastClickedCardId = 0;
         private int cardCount;
         private const int MaxCardCount = 2;
         private bool canClick = true;
-        
-     
-        public CardGameController(IPanelView panelView)
-        {
-            this.panelView = panelView;
-            cardModel = new CardModel();
-            panelView.InitCard(cardModel.GetAllCards());
-        }
-        
 
-        public void ClickCard(string id)
+
+        public CardGameController(ICardView cardView)
         {
-            if(!CanFlip()) 
+            this._cardView = cardView;
+            cardModel = new CardModel();
+            cardView.InitCard(cardModel.GetAllCards());
+        }
+
+
+        public void ClickCard(int id)
+        {
+            if (!CanFlip())
                 return;
-            
-            if (IsSameCard(id))
+
+            if (cardModel.IsFront(id))
                 return;
 
             if (IsEmptyLastCard())
@@ -37,21 +32,22 @@ namespace Work3
 
             FlipCardToFront(id);
             
-            if(cardModel.IsJoker(id))
+            if (cardModel.IsJoker(id))
             {
                 canClick = false;
-                var ids =  cardModel.GetAllFrontCardsId();
+                var ids = cardModel.GetAllFrontCardsId();
                 foreach (var cardId in ids)
                 {
                     FlipCardToBack(cardId);
                 }
+
                 return;
             }
-            
+
             if (cardCount == MaxCardCount)
             {
                 canClick = false;
-                
+
                 var match = cardModel.CheckMatch(lastClickedCardId, id);
                 if (match)
                 {
@@ -62,73 +58,52 @@ namespace Work3
                     {
                         Congratulation();
                     }
-                 
                 }
                 else
                 {
                     cardModel.FlipCard(lastClickedCardId);
                     cardModel.FlipCard(id);
-                    panelView.DelayShowCardBack(id);
-                    panelView.DelayShowCardBack(lastClickedCardId);
-
-                } 
+                    _cardView.ShowCardBack(id);
+                    _cardView.ShowCardBack(lastClickedCardId);
+                }
             }
-
         }
-        
+
         private bool CanFlip()
         {
             return canClick;
         }
-        private bool IsSameCard(string id)
-        {
-            return lastClickedCardId == id && cardCount == 1;
-        }
-        
-        
+
         private bool IsEmptyLastCard()
         {
-            return string.IsNullOrEmpty(lastClickedCardId);
+            return cardCount == 0;
         }
-        private void FlipCardToFront(string id)
+
+        private void FlipCardToFront(int id)
         {
             cardCount++;
             cardModel.FlipCard(id);
-            panelView.ShowCardFront(id);
+            _cardView.ShowCardFront(id);
         }
 
-        private void FlipCardToBack(string cardId)
+        private void FlipCardToBack(int cardId)
         {
-            panelView.DelayShowCardBack(cardId);
+            _cardView.ShowCardBack(cardId);
             cardModel.FlipCard(cardId);
         }
-        
-       
-        
+
         public void ResetCardClickFlag()
         {
             canClick = true;
             cardCount = 0;
-            lastClickedCardId = "";
+            lastClickedCardId = 0;
         }
-        
+
 
         private void Congratulation()
         {
             canClick = false;
-            Debug.Log("Congratulations! You've matched all the cards!");
-            panelView.Completed();
+            _cardView.Completed();
         }
-
-     
-
-
-     
-        
-       
-      
-        
-       
-
     }
 }

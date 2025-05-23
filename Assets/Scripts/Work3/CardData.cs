@@ -1,28 +1,33 @@
 ﻿namespace Work3
 {
-
     public enum State
     {
-        Front, 
+        Front,
         Back,
         Match
     }
+
     public class CardData
     {
-        public string Id { get; set; }
-        public string SpriteIndex { get; set; }
+        public int Id { get; set; }
+        public int SpriteType { get; set; }
         public bool IsJoker { get; set; }
         public State State { get; set; }
-        
-        
-        public CardData(string id,string spriteIndex,bool isJoker)
+
+        public CardData(int id, int spriteType, bool isJoker)
         {
             Id = id;
-            SpriteIndex = spriteIndex;
+            SpriteType = spriteType;
             IsJoker = isJoker;
             State = State.Back;
         }
-
+        
+        public CardData Clone()
+        {
+            return new CardData(Id, SpriteType, IsJoker)
+            {
+                State = State
+            };
+        }
     }
-    
 }

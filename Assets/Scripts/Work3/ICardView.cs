@@ -2,12 +2,11 @@
 
 namespace Work3
 {
-    public interface IPanelView
+    public interface ICardView
     {
         public void Completed();
-        public void DelayShowCardBack();
-        public void ShowCardFront();
+        public void ShowCardBack(params int[] ids);
+        public void ShowCardFront(params int[] ids);
         public void InitCard(IEnumerable<CardData> cardDatas);
-        
     }
 }

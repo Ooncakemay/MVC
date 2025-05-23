@@ -1,12 +1,9 @@
-﻿using UnityEngine.Events;
-
-namespace Work3
+﻿namespace Work3
 {
     public interface ICardGameController
     {
-        void ClickCard(string id);
+        void ClickCard(int id);
 
         void ResetCardClickFlag();
-
     }
 }

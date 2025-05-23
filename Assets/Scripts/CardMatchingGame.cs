@@ -64,7 +64,7 @@ public class CardMatchingGame : MonoBehaviour
 
     private void AssignRandomBackground()
     {
-        int index = UnityEngine.Random.Range(0, backgroundTypeCount);
+        int index = Random.Range(0, backgroundTypeCount);
         background.sprite = backgroundPictures[index];
     }
 
@@ -81,7 +81,7 @@ public class CardMatchingGame : MonoBehaviour
         int cardPairs = 0;
         while (cardPairs < targetScore)
         {
-            int randomCardType = UnityEngine.Random.Range(0, cardTypeCount);
+            int randomCardType = Random.Range(0, cardTypeCount);
             if (!unrepeatedNums.Contains(randomCardType))
             {
                 cardPairs++;
@@ -93,15 +93,15 @@ public class CardMatchingGame : MonoBehaviour
 
     private List<int> GetUnorderedNumbers()
     {
-        List<int> nums = new List<int>();
-        for (int i = 0; i < 9; i++)
+        var nums = new List<int>();
+        for (var i = 0; i < 9; i++)
         {
             nums.Add(i);
         }
-        List<int> unorderedNums = new List<int>();
-        for (int i = 0; i < 9; i++)
+        var unorderedNums = new List<int>();
+        for (var i = 0; i < 9; i++)
         {
-            int index = UnityEngine.Random.Range(0, nums.Count);
+            var index = Random.Range(0, nums.Count);
             unorderedNums.Add(nums[index]);
             nums.Remove(nums[index]);
         }
@@ -113,7 +113,7 @@ public class CardMatchingGame : MonoBehaviour
         var contents = GetCardContents();
         Card tempCard;
 
-        for (int i = 0; i < contents.Length; i++)
+        for (var i = 0; i < contents.Length; i++)
         {
             tempCard = cards[unorderedNums[i]];
             tempCard.content = contents[i];
@@ -123,7 +123,7 @@ public class CardMatchingGame : MonoBehaviour
 
     private Sprite[] GetCardContents()
     {
-        Sprite[] contents = new Sprite[9];
+        var contents = new Sprite[9];
 
         contents[0] = cardJoker;
         contents[1] = randomPickedContents[0];
@@ -169,9 +169,9 @@ public class CardMatchingGame : MonoBehaviour
     {
         isDisplaying = true;
         yield return new WaitForSeconds(1f);
-        for (int i = 0; i < cards.Count; i++)
+        foreach (var t in cards)
         {
-            cards[i].ShowCardBack();
+            t.ShowCardBack();
         }
         isDisplaying = false;
         score = 0;
@@ -213,7 +213,7 @@ public class CardMatchingGame : MonoBehaviour
     {
         mask.SetActive(true);
         systemMsg.text = "Congratulations!";
-        float alpha = 0.05f;
+        var alpha = 0.05f;
         while(alpha < 1)
         {
             alpha += 0.05f;
@@ -221,6 +221,5 @@ public class CardMatchingGame : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
         yield return new WaitForSeconds(3f);
-        Debug.Log("遊戲結束");
     }
 }

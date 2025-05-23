@@ -4,44 +4,83 @@ using System.Linq;
 
 namespace Work3
 {
-    public class CardModel:ICardModel
+    public class CardModel : ICardModel
     {
+        private Dictionary<int, CardData> cards = new();
+        private Random random = new();
+        private const int totalCard = 9;
         
-        private Dictionary<string, CardData> cards = new();
-        /// 鬼牌是 100
-        private const int Joker = 100;
-        
- 
         public CardModel()
         {
             AssignCards();
         }
-        
+
         private void AssignCards()
         {
-            PickFourRandomCardContents();
             AssignCardContent(GetUnorderedNumbers());
         }
+
+        private void AssignCardContent(IReadOnlyList<int> unorderedNums)
+        {
+            var contents = GetCardContents();
+
+            var id = unorderedNums[0];
+            cards.Add(id, new CardData(id, contents[0], true));
+
+            for (var index = 1; index < contents.Length; index++)
+            {
+                id = unorderedNums[index];
+                cards.Add(id, new CardData(id, contents[index], false));
+            }
+        }
+
+        private List<int> GetUnorderedNumbers()
+        {
+            var nums = Nums();
+            var unorderedNums = new List<int>();
+            
+            for (var i = 0; i < totalCard; i++)
+            {
+                var index = UnityEngine.Random.Range(0, nums.Count);
+                unorderedNums.Add(nums[index]);
+                nums.Remove(nums[index]);
+            }
+
+            return unorderedNums;
+        }
+
+        private static List<int> Nums()
+        {
+            var nums = new List<int>();
+
+            for (var i = 0; i < totalCard; i++)
+            {
+                nums.Add(i);
+            }
+
+            return nums;
+        }
+
+
         /// <summary>
         ///  產生不包含鬼牌的卡片
         /// </summary>
         /// <returns></returns>
-        private  List<int>  PickFourRandomCardContents()
+        private List<int> PickFourRandomCardContents()
         {
             var newSprite = new List<int>();
             var unrepeatedNums = new List<int>();
             var cardPairs = 0;
-            
+
             // 只需要4類
             const int targetScore = 4;
             // 但是有六類卡片
             const int cardTypeCount = 6;
-        
+
             while (cardPairs < targetScore)
             {
-                var rand = new Random();
-                var randomCardType = rand.Next(0, cardTypeCount);
-                
+                var randomCardType = random.Next(0, cardTypeCount);
+
                 if (!unrepeatedNums.Contains(randomCardType))
                 {
                     cardPairs++;
@@ -49,52 +88,18 @@ namespace Work3
                     newSprite.Add(randomCardType);
                 }
             }
+
             return newSprite;
         }
-        
-        private List<int> GetUnorderedNumbers()
-        {
-            List<int> nums = new List<int>();
-            for (int i = 0; i < 9; i++)
-            {
-                nums.Add(i);
-            }
-            List<int> unorderedNums = new List<int>();
-            for (int i = 0; i < 9; i++)
-            {
-                int index = UnityEngine.Random.Range(0, nums.Count);
-                unorderedNums.Add(nums[index]);
-                nums.Remove(nums[index]);
-            }
-            return unorderedNums;
-        }
-        
-        private void AssignCardContent(IReadOnlyList<int> unorderedNums)
-        {
-            var contents = GetCardContents();
 
-            
-            for (var  index = 0; index < contents.Length ; index++)
-            {
-                var id = index.ToString();
-                cards.Add(id, new CardData(id ,id ,false));
-            }
-
-            for (var index = 0; index < contents.Length; index++)
-            {
-                var tempCard = cards[unorderedNums[index].ToString()];
-                tempCard.SpriteIndex =  contents[index] == Joker ? "joker" : contents[index].ToString();
-                tempCard.IsJoker = (index == 0);
-            }
-        }
 
         private int[] GetCardContents()
         {
             var randomPickedContents = PickFourRandomCardContents();
-            
+
             var contents = new int[9];
-            
-            contents[0] = Joker;
+
+            contents[0] = 6;
             contents[1] = randomPickedContents[0];
             contents[2] = randomPickedContents[0];
             contents[3] = randomPickedContents[1];
@@ -110,20 +115,20 @@ namespace Work3
 
         public IReadOnlyList<CardData> GetAllCards()
         {
-            return cards.Values.ToList();
+            return cards.Values.Select(card => card.Clone()).ToList();
         }
 
-        public void FlipCard(string id)
+        public void FlipCard(int id)
         {
             GetCard(id).State = GetCard(id).State == State.Back ? State.Front : State.Back;
         }
 
-        public bool CheckMatch(string lastClickedCardId, string id)
+        public bool CheckMatch(int lastClickedCardId, int id)
         {
             var lastCard = GetCard(lastClickedCardId);
             var currentCard = GetCard(id);
 
-            if (lastCard.SpriteIndex == currentCard.SpriteIndex)
+            if (lastCard.SpriteType == currentCard.SpriteType)
             {
                 return true;
             }
@@ -131,34 +136,36 @@ namespace Work3
             return false;
         }
 
-        public void SetCardMatch(string id)
+        public void SetCardMatch(int id)
         {
             GetCard(id).State = State.Match;
         }
 
         public bool IsAllMatched()
         {
-            return cards.Values.Where(c=> c.IsJoker == false).All(card => card.State == State.Match);
+            return cards.Values.All(card => card.IsJoker || card.State == State.Match);
         }
 
-        public bool IsJoker(string id)
+        public bool IsJoker(int id)
         {
             return GetCard(id).IsJoker;
         }
 
-        public IReadOnlyList<string> GetAllFrontCardsId()
+      
+
+        public bool IsFront(int id)
         {
-           return cards.Values.Where(c=> c.State is State.Front or State.Match).Select(c => c.Id).ToList();
+            return  GetCard(id).State == State.Front;;
         }
 
-        private CardData GetCard(string id)
+        public IEnumerable<int> GetAllFrontCardsId()
         {
-            if (cards.ContainsKey(id))
-            {
-                return cards[id];
-            }
+            return cards.Values.Select(card => card.Id);
+        }
 
-            throw new Exception("卡片不存在");
+        private CardData GetCard(int id)
+        {
+            return cards.GetValueOrDefault(id);
         }
     }
 }

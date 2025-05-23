@@ -1698,7 +1698,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardBack: {fileID: 21300000, guid: 0fec1043f0ff43a449cbf574f53b6d57, type: 3}
-  cardJoker: {fileID: 21300000, guid: 06d76877e115ab54cbcdb3bb908fda45, type: 3}
   cardSprites:
   - {fileID: 21300000, guid: 9cb66fef466f0184789054e743610c1f, type: 3}
   - {fileID: 21300000, guid: 92fe02d33daedd148b12f5be585cd94a, type: 3}
@@ -1706,6 +1705,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 386ab4067b4b01c42a443212bb4623ca, type: 3}
   - {fileID: 21300000, guid: 9cfb8c7e56845c542aca7feb39b84d71, type: 3}
   - {fileID: 21300000, guid: 0bfe75e3f8e3c77429fdbfa00e45d2c0, type: 3}
+  - {fileID: 21300000, guid: 06d76877e115ab54cbcdb3bb908fda45, type: 3}
   cards:
   - {fileID: 1382563391}
   - {fileID: 1460414234}
