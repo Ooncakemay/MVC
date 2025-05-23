@@ -3,7 +3,7 @@
     public class CardGameController : ICardGameController
     {
         private readonly ICardModel cardModel;
-        private ICardView _cardView;
+        private ICardView cardView;
 
         private int lastClickedCardId = 0;
         private int cardCount;
@@ -13,7 +13,7 @@
 
         public CardGameController(ICardView cardView)
         {
-            this._cardView = cardView;
+            this.cardView = cardView;
             cardModel = new CardModel();
             cardView.InitCard(cardModel.GetAllCards());
         }
@@ -63,8 +63,8 @@
                 {
                     cardModel.FlipCard(lastClickedCardId);
                     cardModel.FlipCard(id);
-                    _cardView.ShowCardBack(id);
-                    _cardView.ShowCardBack(lastClickedCardId);
+                    cardView.ShowCardBack(id);
+                    cardView.ShowCardBack(lastClickedCardId);
                 }
             }
         }
@@ -83,12 +83,12 @@
         {
             cardCount++;
             cardModel.FlipCard(id);
-            _cardView.ShowCardFront(id);
+            cardView.ShowCardFront(id);
         }
 
         private void FlipCardToBack(int cardId)
         {
-            _cardView.ShowCardBack(cardId);
+            cardView.ShowCardBack(cardId);
             cardModel.FlipCard(cardId);
         }
 
@@ -103,7 +103,7 @@
         private void Congratulation()
         {
             canClick = false;
-            _cardView.Completed();
+            cardView.Completed();
         }
     }
 }

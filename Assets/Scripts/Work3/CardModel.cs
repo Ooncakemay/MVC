@@ -8,7 +8,7 @@ namespace Work3
     {
         private Dictionary<int, CardData> cards = new();
         private Random random = new();
-        private const int totalCard = 9;
+        private const int TotalCard = 9;
 
         public CardModel()
         {
@@ -39,7 +39,7 @@ namespace Work3
             var nums = Nums();
             var unorderedNums = new List<int>();
 
-            for (var i = 0; i < totalCard; i++)
+            for (var i = 0; i < TotalCard; i++)
             {
                 var index = UnityEngine.Random.Range(0, nums.Count);
                 unorderedNums.Add(nums[index]);
@@ -53,7 +53,7 @@ namespace Work3
         {
             var nums = new List<int>();
 
-            for (var i = 0; i < totalCard; i++)
+            for (var i = 0; i < TotalCard; i++)
             {
                 nums.Add(i);
             }
@@ -97,9 +97,10 @@ namespace Work3
         {
             var randomPickedContents = PickFourRandomCardContents();
 
-            var contents = new int[totalCard];
+            var contents = new int[TotalCard];
 
-            contents[0] = 6;
+            const int jokerType = 6;
+            contents[0] = jokerType;
 
             for (var index = 0; index < 4; index++)
             {
