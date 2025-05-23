@@ -97,7 +97,7 @@ namespace Work3
         {
             var randomPickedContents = PickFourRandomCardContents();
 
-            var contents = new int[9];
+            var contents = new int[totalCard];
 
             contents[0] = 6;
 
