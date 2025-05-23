@@ -81,7 +81,7 @@ namespace Work3
             {
                 var randomCardType = random.Next(0, cardTypeCount);
 
-                if (!unrepeatedNums.Contains(randomCardType))
+                if (unrepeatedNums.Contains(randomCardType) is false)
                 {
                     cardPairs++;
                     unrepeatedNums.Add(randomCardType);
