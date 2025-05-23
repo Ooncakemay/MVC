@@ -31,7 +31,7 @@
                 lastClickedCardId = id;
 
             FlipCardToFront(id);
-            
+
             if (cardModel.IsJoker(id))
             {
                 canClick = false;

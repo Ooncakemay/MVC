@@ -102,8 +102,7 @@ namespace Work3
             foreach (var data in cardDatas)
             {
                 var card = cards[data.Id];
-                card.Init(cardSprites[data.SpriteType],cardBack,() =>cardGameController.ClickCard(data.Id));
-                
+                card.Init(cardSprites[data.SpriteType], cardBack, () => cardGameController.ClickCard(data.Id));
                 cardDictionary.Add(data.Id, card);
             }
         }

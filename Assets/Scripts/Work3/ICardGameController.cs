@@ -3,7 +3,6 @@
     public interface ICardGameController
     {
         void ClickCard(int id);
-
         void ResetCardClickFlag();
     }
 }
