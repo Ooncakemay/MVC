@@ -144,8 +144,7 @@ namespace Work3
         {
             return GetCard(id).IsJoker;
         }
-
-
+        
         public bool IsFront(int id)
         {
             return GetCard(id).State == State.Front;
