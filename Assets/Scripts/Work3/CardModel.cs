@@ -9,7 +9,7 @@ namespace Work3
         private Dictionary<int, CardData> cards = new();
         private Random random = new();
         private const int totalCard = 9;
-        
+
         public CardModel()
         {
             AssignCards();
@@ -38,7 +38,7 @@ namespace Work3
         {
             var nums = Nums();
             var unorderedNums = new List<int>();
-            
+
             for (var i = 0; i < totalCard; i++)
             {
                 var index = UnityEngine.Random.Range(0, nums.Count);
@@ -100,14 +100,12 @@ namespace Work3
             var contents = new int[9];
 
             contents[0] = 6;
-            contents[1] = randomPickedContents[0];
-            contents[2] = randomPickedContents[0];
-            contents[3] = randomPickedContents[1];
-            contents[4] = randomPickedContents[1];
-            contents[5] = randomPickedContents[2];
-            contents[6] = randomPickedContents[2];
-            contents[7] = randomPickedContents[3];
-            contents[8] = randomPickedContents[3];
+
+            for (var index = 0; index < 4; index++)
+            {
+                contents[index * 2 + 1] = randomPickedContents[index];
+                contents[index * 2 + 2] = randomPickedContents[index];
+            }
 
             return contents;
         }
@@ -151,11 +149,11 @@ namespace Work3
             return GetCard(id).IsJoker;
         }
 
-      
 
         public bool IsFront(int id)
         {
-            return  GetCard(id).State == State.Front;;
+            return GetCard(id).State == State.Front;
+            ;
         }
 
         public IEnumerable<int> GetAllFrontCardsId()
