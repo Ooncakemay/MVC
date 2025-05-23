@@ -21,7 +21,7 @@
 
         public void ClickCard(int id)
         {
-            if (!CanFlip())
+            if (CanFlip() is false)
                 return;
 
             if (cardModel.IsFront(id))
@@ -44,7 +44,7 @@
                 return;
             }
 
-            if (cardCount == MaxCardCount)
+            if (cardCount is MaxCardCount)
             {
                 canClick = false;
 
