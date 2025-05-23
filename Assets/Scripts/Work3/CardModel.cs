@@ -101,11 +101,15 @@ namespace Work3
 
             const int jokerType = 6;
             contents[0] = jokerType;
-
-            for (var index = 0; index < 4; index++)
+            
+            const int pairCount = 4; // 抽出的卡片配對數量
+            for (var index = 0; index < pairCount; index++)
             {
-                contents[index * 2 + 1] = randomPickedContents[index];
-                contents[index * 2 + 2] = randomPickedContents[index];
+                var first = index * 2 + 1;
+                var second = first +1;
+                
+                contents[first] = randomPickedContents[index];
+                contents[second] = randomPickedContents[index];
             }
 
             return contents;
