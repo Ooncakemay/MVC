@@ -154,7 +154,6 @@ namespace Work3
         public bool IsFront(int id)
         {
             return GetCard(id).State == State.Front;
-            ;
         }
 
         public IEnumerable<int> GetAllFrontCardsId()
@@ -163,8 +162,10 @@ namespace Work3
         }
 
         private CardData GetCard(int id)
-        {
-            return cards.GetValueOrDefault(id);
+        { 
+            var data = cards.GetValueOrDefault(id);
+
+            return data ?? CardData.CreateDefault();
         }
     }
 }

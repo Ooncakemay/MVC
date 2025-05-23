@@ -29,5 +29,10 @@
                 State = State
             };
         }
+
+        public static CardData CreateDefault()
+        {
+            return new CardData(0, 0, false);
+        }
     }
 }
