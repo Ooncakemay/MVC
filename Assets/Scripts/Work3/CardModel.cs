@@ -127,12 +127,7 @@ namespace Work3
             var lastCard = GetCard(lastClickedCardId);
             var currentCard = GetCard(id);
 
-            if (lastCard.SpriteType == currentCard.SpriteType)
-            {
-                return true;
-            }
-
-            return false;
+            return lastCard.SpriteType == currentCard.SpriteType;
         }
 
         public void SetCardMatch(int id)
