@@ -3,7 +3,7 @@
     public class CardGameController : ICardGameController
     {
         private readonly ICardModel cardModel;
-        private ICardView cardView;
+        private readonly ICardView cardView;
 
         private int lastClickedCardId = 0;
         private int cardCount;
@@ -22,13 +22,19 @@
         public void ClickCard(int id)
         {
             if (CanFlip() is false)
+            {
                 return;
+            }
 
             if (cardModel.IsFront(id))
+            {
                 return;
+            }
 
             if (IsEmptyLastCard())
+            {
                 lastClickedCardId = id;
+            }
 
             FlipCardToFront(id);
 
@@ -36,11 +42,12 @@
             {
                 canClick = false;
                 var ids = cardModel.GetAllFrontCardsId();
-                
+
                 foreach (var cardId in ids)
                 {
                     FlipCardToBack(cardId);
                 }
+
                 return;
             }
 
@@ -48,10 +55,10 @@
             {
                 canClick = false;
 
-                var match = cardModel.CheckMatch(id,lastClickedCardId);
+                var match = cardModel.CheckMatch(id, lastClickedCardId);
                 if (match)
                 {
-                    cardModel.SetCardMatch(id,lastClickedCardId);
+                    cardModel.SetCardMatch(id, lastClickedCardId);
                     ResetCardClickFlag();
                     if (cardModel.IsAllMatched())
                     {
@@ -72,7 +79,7 @@
 
         private bool IsEmptyLastCard()
         {
-            return cardCount == 0;
+            return cardCount is 0;
         }
 
         private void FlipCardToFront(int id)
@@ -88,8 +95,8 @@
             {
                 FlipCardToBack(id);
             }
-
         }
+
         private void FlipCardToBack(int id)
         {
             cardView.ShowCardBack(id);

@@ -73,10 +73,15 @@ namespace Work3
         {
             foreach (var id in ids)
             {
-                if (cardDictionary.ContainsKey(id))
-                {
-                    StartCoroutine(WaitForDelayShowCardBackThenReset(id));
-                }
+                ShowCardBack(id);
+            }
+        }
+
+        private void ShowCardBack(int id)
+        {
+            if (cardDictionary.ContainsKey(id))
+            {
+                StartCoroutine(WaitForDelayShowCardBackThenReset(id));
             }
         }
 
@@ -90,10 +95,15 @@ namespace Work3
         {
             foreach (var id in ids)
             {
-                if (cardDictionary.ContainsKey(id))
-                {
-                    cardDictionary[id].ShowCardFront();
-                }
+                ShowCardFront(id);
+            }
+        }
+
+        private void ShowCardFront(int id)
+        {
+            if (cardDictionary.ContainsKey(id))
+            {
+                cardDictionary[id].ShowCardFront();
             }
         }
 

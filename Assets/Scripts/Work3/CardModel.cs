@@ -9,6 +9,10 @@ namespace Work3
         private Dictionary<int, CardData> cards = new();
         private Random random = new();
         private const int TotalCard = 9;
+        // 只要4種
+        private const int TargetScore = 4;
+        // 卡片種類數量
+        private const int CardTypeCount = 6;
 
         public CardModel()
         {
@@ -33,6 +37,7 @@ namespace Work3
                 cards.Add(id, new CardData(id, contents[index], false));
             }
         }
+
         private int[] GetCardContents()
         {
             var randomPickedContents = PickFourRandomCardContents();
@@ -41,20 +46,20 @@ namespace Work3
 
             const int jokerType = 6;
             contents[0] = jokerType;
-            
+
             const int pairCount = 4; // 抽出的卡片配對數量
             for (var index = 0; index < pairCount; index++)
             {
                 var first = index * 2 + 1;
-                var second = first +1;
-                
+                var second = first + 1;
+
                 contents[first] = randomPickedContents[index];
                 contents[second] = randomPickedContents[index];
             }
 
             return contents;
         }
-        
+
         /// <summary>
         ///  產生不包含鬼牌的卡片
         /// </summary>
@@ -65,14 +70,9 @@ namespace Work3
             var unrepeatedNums = new List<int>();
             var cardPairs = 0;
 
-            // 只需要4類
-            const int targetScore = 4;
-            // 但是有六類卡片
-            const int cardTypeCount = 6;
-
-            while (cardPairs < targetScore)
+            while (cardPairs < TargetScore)
             {
-                var randomCardType = random.Next(0, cardTypeCount);
+                var randomCardType = random.Next(0, CardTypeCount);
 
                 if (unrepeatedNums.Contains(randomCardType) is false)
                 {
@@ -87,12 +87,13 @@ namespace Work3
 
         private List<int> GetUnorderedNumbers()
         {
-            var nums = Nums();
+            var nums = Enumerable.Range(0, TotalCard).ToList();
+
             var unorderedNums = new List<int>();
 
             for (var i = 0; i < TotalCard; i++)
             {
-                var index = UnityEngine.Random.Range(0, nums.Count);
+                var index = random.Next(0, nums.Count);
                 unorderedNums.Add(nums[index]);
                 nums.Remove(nums[index]);
             }
@@ -100,42 +101,22 @@ namespace Work3
             return unorderedNums;
         }
 
-        private static List<int> Nums()
-        {
-            var nums = new List<int>();
-
-            for (var i = 0; i < TotalCard; i++)
-            {
-                nums.Add(i);
-            }
-
-            return nums;
-        }
-        
 
         public IReadOnlyList<CardData> GetAllCards()
         {
             return cards.Values.Select(card => card.Clone()).ToList();
         }
-        
+
         public IEnumerable<int> GetAllFrontCardsId()
         {
             return cards.Values.Where(card => card.State is State.Front or State.Match).Select(card => card.Id);
         }
-        public void FlipCard(params int[] ids)
-        {
-            foreach (var id in ids)
-            {
-                FlipCard(id);
-                
-            }
-        }
-        
+
         public void FlipCard(int id)
         {
-            GetCard(id).State = GetCard(id).State == State.Back ? State.Front : State.Back;
+            GetCard(id).State = GetCard(id).State is State.Back ? State.Front : State.Back;
         }
-        
+
 
         public bool CheckMatch(int id, int lastClickedCardId)
         {
@@ -150,16 +131,16 @@ namespace Work3
             foreach (var id in ids)
             {
                 SetCardMatch(id);
-                
             }
         }
 
-        public void SetCardMatch(int id)
+        private void SetCardMatch(int id)
         {
             GetCard(id).State = State.Match;
         }
+
         private CardData GetCard(int id)
-        { 
+        {
             var data = cards.GetValueOrDefault(id);
 
             return data ?? CardData.CreateDefault();
@@ -167,21 +148,17 @@ namespace Work3
 
         public bool IsAllMatched()
         {
-            return cards.Values.Where(c=> c.IsJoker == false).All(card => card.State == State.Match);
+            return cards.Values.Where(c => c.IsJoker is false).All(card => card.State is State.Match);
         }
 
         public bool IsJoker(int id)
         {
             return GetCard(id).IsJoker;
         }
-        
+
         public bool IsFront(int id)
         {
-            return GetCard(id).State == State.Front;
+            return GetCard(id).State is State.Front;
         }
-
-     
-
-        
     }
 }
