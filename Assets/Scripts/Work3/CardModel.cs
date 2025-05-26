@@ -141,7 +141,7 @@ namespace Work3
 
         public bool IsAllMatched()
         {
-            return cards.Values.All(card => card.IsJoker || card.State == State.Match);
+            return cards.Values.Where(c=> c.IsJoker == false).All(card => card.State == State.Match);
         }
 
         public bool IsJoker(int id)
@@ -156,7 +156,7 @@ namespace Work3
 
         public IEnumerable<int> GetAllFrontCardsId()
         {
-            return cards.Values.Select(card => card.Id);
+            return cards.Values.Where(card => card.State is State.Front or State.Match).Select(card => card.Id);
         }
 
         private CardData GetCard(int id)
