@@ -13,6 +13,8 @@ namespace Work3
         private const int TargetScore = 4;
         // 卡片種類數量
         private const int CardTypeCount = 6;
+        // 鬼牌的種類
+        private const int JokerType = 6;
 
         public CardModel()
         {
@@ -44,8 +46,7 @@ namespace Work3
 
             var contents = new int[TotalCard];
 
-            const int jokerType = 6;
-            contents[0] = jokerType;
+            contents[0] = JokerType;
 
             const int pairCount = 4; // 抽出的卡片配對數量
             for (var index = 0; index < pairCount; index++)
