@@ -36,11 +36,11 @@
             {
                 canClick = false;
                 var ids = cardModel.GetAllFrontCardsId();
+                
                 foreach (var cardId in ids)
                 {
                     FlipCardToBack(cardId);
                 }
-
                 return;
             }
 
@@ -48,11 +48,10 @@
             {
                 canClick = false;
 
-                var match = cardModel.CheckMatch(lastClickedCardId, id);
+                var match = cardModel.CheckMatch(id,lastClickedCardId);
                 if (match)
                 {
-                    cardModel.SetCardMatch(lastClickedCardId);
-                    cardModel.SetCardMatch(id);
+                    cardModel.SetCardMatch(id,lastClickedCardId);
                     ResetCardClickFlag();
                     if (cardModel.IsAllMatched())
                     {
@@ -61,10 +60,7 @@
                 }
                 else
                 {
-                    cardModel.FlipCard(lastClickedCardId);
-                    cardModel.FlipCard(id);
-                    cardView.ShowCardBack(id);
-                    cardView.ShowCardBack(lastClickedCardId);
+                    FlipCardToBack(id, lastClickedCardId);
                 }
             }
         }
@@ -86,10 +82,18 @@
             cardView.ShowCardFront(id);
         }
 
-        private void FlipCardToBack(int cardId)
+        private void FlipCardToBack(params int[] ids)
         {
-            cardView.ShowCardBack(cardId);
-            cardModel.FlipCard(cardId);
+            foreach (var id in ids)
+            {
+                FlipCardToBack(id);
+            }
+
+        }
+        private void FlipCardToBack(int id)
+        {
+            cardView.ShowCardBack(id);
+            cardModel.FlipCard(id);
         }
 
         public void ResetCardClickFlag()
@@ -98,7 +102,6 @@
             cardCount = 0;
             lastClickedCardId = 0;
         }
-
 
         private void Congratulation()
         {

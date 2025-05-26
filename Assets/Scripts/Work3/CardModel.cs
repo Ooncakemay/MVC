@@ -33,35 +33,28 @@ namespace Work3
                 cards.Add(id, new CardData(id, contents[index], false));
             }
         }
-
-        private List<int> GetUnorderedNumbers()
+        private int[] GetCardContents()
         {
-            var nums = Nums();
-            var unorderedNums = new List<int>();
+            var randomPickedContents = PickFourRandomCardContents();
 
-            for (var i = 0; i < TotalCard; i++)
+            var contents = new int[TotalCard];
+
+            const int jokerType = 6;
+            contents[0] = jokerType;
+            
+            const int pairCount = 4; // 抽出的卡片配對數量
+            for (var index = 0; index < pairCount; index++)
             {
-                var index = UnityEngine.Random.Range(0, nums.Count);
-                unorderedNums.Add(nums[index]);
-                nums.Remove(nums[index]);
+                var first = index * 2 + 1;
+                var second = first +1;
+                
+                contents[first] = randomPickedContents[index];
+                contents[second] = randomPickedContents[index];
             }
 
-            return unorderedNums;
+            return contents;
         }
-
-        private static List<int> Nums()
-        {
-            var nums = new List<int>();
-
-            for (var i = 0; i < TotalCard; i++)
-            {
-                nums.Add(i);
-            }
-
-            return nums;
-        }
-
-
+        
         /// <summary>
         ///  產生不包含鬼牌的卡片
         /// </summary>
@@ -92,51 +85,84 @@ namespace Work3
             return newSprite;
         }
 
-
-        private int[] GetCardContents()
+        private List<int> GetUnorderedNumbers()
         {
-            var randomPickedContents = PickFourRandomCardContents();
+            var nums = Nums();
+            var unorderedNums = new List<int>();
 
-            var contents = new int[TotalCard];
-
-            const int jokerType = 6;
-            contents[0] = jokerType;
-            
-            const int pairCount = 4; // 抽出的卡片配對數量
-            for (var index = 0; index < pairCount; index++)
+            for (var i = 0; i < TotalCard; i++)
             {
-                var first = index * 2 + 1;
-                var second = first +1;
-                
-                contents[first] = randomPickedContents[index];
-                contents[second] = randomPickedContents[index];
+                var index = UnityEngine.Random.Range(0, nums.Count);
+                unorderedNums.Add(nums[index]);
+                nums.Remove(nums[index]);
             }
 
-            return contents;
+            return unorderedNums;
         }
 
+        private static List<int> Nums()
+        {
+            var nums = new List<int>();
+
+            for (var i = 0; i < TotalCard; i++)
+            {
+                nums.Add(i);
+            }
+
+            return nums;
+        }
+        
 
         public IReadOnlyList<CardData> GetAllCards()
         {
             return cards.Values.Select(card => card.Clone()).ToList();
         }
-
+        
+        public IEnumerable<int> GetAllFrontCardsId()
+        {
+            return cards.Values.Where(card => card.State is State.Front or State.Match).Select(card => card.Id);
+        }
+        public void FlipCard(params int[] ids)
+        {
+            foreach (var id in ids)
+            {
+                FlipCard(id);
+                
+            }
+        }
+        
         public void FlipCard(int id)
         {
             GetCard(id).State = GetCard(id).State == State.Back ? State.Front : State.Back;
         }
+        
 
-        public bool CheckMatch(int lastClickedCardId, int id)
+        public bool CheckMatch(int id, int lastClickedCardId)
         {
-            var lastCard = GetCard(lastClickedCardId);
-            var currentCard = GetCard(id);
+            var lastCard = GetCard(id);
+            var currentCard = GetCard(lastClickedCardId);
 
             return lastCard.SpriteType == currentCard.SpriteType;
+        }
+
+        public void SetCardMatch(params int[] ids)
+        {
+            foreach (var id in ids)
+            {
+                SetCardMatch(id);
+                
+            }
         }
 
         public void SetCardMatch(int id)
         {
             GetCard(id).State = State.Match;
+        }
+        private CardData GetCard(int id)
+        { 
+            var data = cards.GetValueOrDefault(id);
+
+            return data ?? CardData.CreateDefault();
         }
 
         public bool IsAllMatched()
@@ -154,16 +180,8 @@ namespace Work3
             return GetCard(id).State == State.Front;
         }
 
-        public IEnumerable<int> GetAllFrontCardsId()
-        {
-            return cards.Values.Where(card => card.State is State.Front or State.Match).Select(card => card.Id);
-        }
+     
 
-        private CardData GetCard(int id)
-        { 
-            var data = cards.GetValueOrDefault(id);
-
-            return data ?? CardData.CreateDefault();
-        }
+        
     }
 }
